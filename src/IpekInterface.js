@@ -1,8 +1,8 @@
 import React, { useState } from "react";
-import "./ipek.css"; // CSS’in yolunu projenin yapısına göre kontrol et
+import "./ipek.css";
 
 const mockRecipients = [
-  { id: 1, name: "İlgin" },
+  { id: 1, name: "Ilgın" },
   { id: 2, name: "İdil" },
   { id: 3, name: "Deren" },
   { id: 4, name: "İpek" },
@@ -10,24 +10,24 @@ const mockRecipients = [
 ];
 
 const initialGiftHistory = {
-  1: ["Çiçek Buketi", "Çikolata Kutusu"],
-  2: ["Kitap", "Kupa"],
+  1: ["Bouquet of flowers", "Chocolate box"],
+  2: ["Book", "Mug"],
   3: [],
-  4: ["Kolye", "Defter"],
-  5: ["Saat"],
+  4: ["Necklace", "Notebook"],
+  5: ["Watch"],
 };
 
 const possibleGifts = [
-  "Çiçek Buketi",
-  "Çikolata Kutusu",
-  "Kitap",
-  "Kupa",
-  "Kolye",
-  "Defter",
-  "Saat",
-  "Parfüm",
-  "Bardak Seti",
-  "Oyuncak",
+  "Bouquet of flowers",
+  "Chocolate box",
+  "Book",
+  "Mug",
+  "Necklace",
+  "Notebook",
+  "Watch",
+  "Perfume",
+  "Cup set",
+  "Toy",
 ];
 
 export default function GiftHistoryPage() {
@@ -37,6 +37,7 @@ export default function GiftHistoryPage() {
   const [giftHistory, setGiftHistory] = useState({ ...initialGiftHistory });
   const [searchTerm, setSearchTerm] = useState("");
   const [recommendations, setRecommendations] = useState([]);
+  const [newGift, setNewGift] = useState(""); // ← yeni eklenen state
 
   const history = giftHistory[selectedRecipient] || [];
   const filteredHistory = history.filter((item) =>
@@ -44,32 +45,31 @@ export default function GiftHistoryPage() {
   );
 
   const handleRecordGift = () => {
-    const gift = window.prompt("Enter gift name to record:");
-    if (gift && gift.trim()) {
-      setGiftHistory((prev) => {
-        const updated = { ...prev };
-        updated[selectedRecipient] = [
-          ...(updated[selectedRecipient] || []),
-          gift.trim(),
-        ];
-        return updated;
-      });
-      setRecommendations([]); // Yeni kayıt gelince önerileri temizle
-    }
+    const gift = newGift.trim();
+    if (!gift) return;
+    setGiftHistory((prev) => {
+      const updated = { ...prev };
+      updated[selectedRecipient] = [
+        ...(updated[selectedRecipient] || []),
+        gift,
+      ];
+      return updated;
+    });
+    setNewGift(""); // input’u temizle
+    setRecommendations([]);
   };
 
   const handleGenerateRecommendations = () => {
     const past = giftHistory[selectedRecipient] || [];
-    const unique = [...new Set(possibleGifts)];
-    const recs = unique.filter((g) => !past.includes(g));
-    setRecommendations(recs.slice(0, 3)); // En fazla 3 öneri
+    const recs = possibleGifts.filter((g) => !past.includes(g));
+    setRecommendations(recs.slice(0, 3));
   };
 
   return (
     <div className="page-background">
       <div className="page-card">
         <h1 className="text-3xl font-bold text-center mb-6 text-gray-800">
-          Gift History Tracker (UC09)
+          Gift History Tracker
         </h1>
 
         {/* Selector & Search */}
@@ -98,7 +98,7 @@ export default function GiftHistoryPage() {
             <input
               id="search"
               type="text"
-              placeholder="e.g. Kitap"
+              placeholder="e.g. Book"
               className="input"
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
@@ -121,9 +121,20 @@ export default function GiftHistoryPage() {
           )}
         </div>
 
-        {/* Actions */}
-        <div className="flex gap-4 mb-6">
-          <button className="btn btn-record" onClick={handleRecordGift}>
+        {/* Record Gift kısmı artık inline input + buton */}
+        <div className="flex flex-col md:flex-row items-center gap-4 mb-6">
+          <input
+            type="text"
+            placeholder="Enter a past gift…"
+            className="input flex-1"
+            value={newGift}
+            onChange={(e) => setNewGift(e.target.value)}
+          />
+          <button
+            className="btn btn-record"
+            onClick={handleRecordGift}
+            disabled={!newGift.trim()}
+          >
             Record Gift
           </button>
           <button
