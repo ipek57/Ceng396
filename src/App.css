@@ -3,6 +3,14 @@
   font-family: "Arial", sans-serif;
   margin: 0;
   padding: 0;
+  height: 100%;
+}
+
+html,
+body {
+  margin: 0;
+  padding: 0;
+  height: 100%;
 }
 
 /* ====== Sidebar Menü ====== */
@@ -12,48 +20,61 @@
   left: 0;
   height: 100vh;
   width: 200px;
+  background-color: rgba(255, 255, 255, 0.5);
   background-image: url("shopping.png");
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
+  background-blend-mode: overlay;
   display: flex;
   flex-direction: column;
   align-items: center;
   padding-top: 20px;
   box-shadow: 2px 0 8px rgba(0, 0, 0, 0.15);
-  gap: 20px;
+  gap: 12px;
   z-index: 100;
 }
 
-/* Sidebar Başlık – Gölgeli, kutusuz */
 .menu-header {
   color: #710024b5;
-  font-size: 2.1rem;
+  font-size: 1.8rem;
   font-weight: bold;
   text-align: center;
-  padding: 0;
-  margin: 20px 10px 0;
-  text-shadow: 2px 2px 6px rgb(255, 255, 255);
+  margin: 10px 0;
+  text-shadow: 2px 2px 6px rgba(255, 255, 255, 0.7);
 }
 
-/* Sidebar Butonlar – Pembe kutular, ortalanmış */
+/* Ortak sidebar buton stili */
 .menu button {
   width: calc(100% - 40px);
   background-color: rgba(250, 147, 162, 0.85);
   color: #333;
-  border: 1px solid rgba(255, 255, 255, 0.792);
-  padding: 12px;
-  font-size: 1rem;
+  border: 1px solid rgba(255, 255, 255, 0.8);
+  padding: 10px;
+  font-size: 0.9rem;
   text-align: center;
   cursor: pointer;
-  border-radius: 12px;
-  transition: background-color 0.3s, transform 0.2s, box-shadow 0.3s;
-  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
+  border-radius: 8px;
+  transition: background-color 0.2s, transform 0.1s;
 }
 .menu button:hover {
   background-color: rgb(249, 146, 161);
-  transform: translateX(5px);
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+  transform: translateX(4px);
+}
+
+/* ====== Sidebar Return Home Butonu ====== */
+.btn-home-sidebar {
+  margin-top: auto; /* en alta iter */
+  margin-bottom: 40px;
+  background-color: #6b21a8;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  padding: 10px;
+  font-size: 0.9rem;
+}
+.btn-home-sidebar:hover {
+  background-color: #581c87;
 }
 
 /* ====== Üst Sabit Başlık ====== */
@@ -90,17 +111,37 @@ header h1 {
 .page-content {
   padding: 100px 20px 20px;
   width: 100%;
+  box-sizing: border-box;
 }
 
-/* ====== Yardımcı Buton Stilleri ====== */
-.btn {
-  padding: 0.75rem;
-  font-size: 1rem;
-  border: none;
-  border-radius: 0.5rem;
-  cursor: pointer;
-  transition: background 0.2s;
+/* ====== Homepage Bölümü ====== */
+.homepage {
+  text-align: center;
+  color: #333;
 }
+.homepage h2 {
+  font-size: 2rem;
+  margin-bottom: 1rem;
+}
+.homepage p {
+  font-size: 1rem;
+  line-height: 1.6;
+  margin-bottom: 1.5rem;
+}
+.btn-home-main {
+  background: #a821219a;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  padding: 10px 16px;
+  font-size: 1rem;
+  cursor: pointer;
+}
+.btn-home-main:hover {
+  background: #581c87;
+}
+
+/* ====== Diğer Buton Stilleri ====== */
 .btn-record {
   background: #4f46e5;
   color: white;
