@@ -1,74 +1,71 @@
-// DerenInterface.js
-
-import React, { useState } from 'react';
-
-const templates = {
-  birthday: "Happy Birthday! Wishing you all the best.",
-  anniversary: "Happy Anniversary! Here's to many more wonderful years.",
-  thankYou: "Thank you for everything you do!",
-};
+import React, { useState } from "react";
+import "./DerenInterface.css";
 
 function DerenInterface() {
-  const [selectedTemplate, setSelectedTemplate] = useState('');
-  const [customMessage, setCustomMessage] = useState('');
-  const [method, setMethod] = useState('email');
-  const [status, setStatus] = useState('');
+  const [selectedOption, setSelectedOption] = useState("");
+  const [contactInfo, setContactInfo] = useState("");
+
+  const handleOptionChange = (e) => {
+    setSelectedOption(e.target.value);
+    setContactInfo(""); // clear previous value
+  };
 
   const handleSend = () => {
-    if (!selectedTemplate) {
-      setStatus("Please select a template.");
-      return;
-    }
-
-    const messageToSend = customMessage || templates[selectedTemplate];
-    console.log("Sending via:", method);
-    console.log("Message:", messageToSend);
-    setStatus("Message sent successfully!");
+    alert(`Sending via ${selectedOption}: ${contactInfo}`);
   };
 
   return (
-    <div style={{ padding: '20px', fontFamily: 'Arial' }}>
-      <h2>Send Greeting Message</h2>
+    <div className="deren-wrapper">
+      <div className="deren-container">
+        <h2 className="deren-title">Send Greeting Message</h2>
 
-      <label>Choose a Template:</label><br />
-      <select onChange={(e) => setSelectedTemplate(e.target.value)} value={selectedTemplate}>
-        <option value="">-- Select --</option>
-        <option value="birthday">Birthday</option>
-        <option value="anniversary">Anniversary</option>
-        <option value="thankYou">Thank You</option>
-      </select>
+        <label className="deren-label">Choose a Template:</label>
+        <select className="deren-select">
+          <option>-- Select --</option>
+          <option>Happy Birthday</option>
+          <option>Congratulations</option>
+        </select>
 
-      {selectedTemplate && (
-        <>
-          <p><strong>Preview:</strong> {templates[selectedTemplate]}</p>
-          <label>Edit the message (optional):</label><br />
-          <textarea
-            rows="4"
-            cols="50"
-            placeholder="Customize the message here..."
-            value={customMessage}
-            onChange={(e) => setCustomMessage(e.target.value)}
-          />
-        </>
-      )}
+        <label className="deren-label">Send via:</label>
+        <div className="deren-radio-group">
+          <label>
+            <input
+              type="radio"
+              value="Email"
+              checked={selectedOption === "Email"}
+              onChange={handleOptionChange}
+            />
+            Email
+          </label>
+          <label>
+            <input
+              type="radio"
+              value="SMS"
+              checked={selectedOption === "SMS"}
+              onChange={handleOptionChange}
+            />
+            SMS
+          </label>
+        </div>
 
-      <div style={{ marginTop: '10px' }}>
-        <label>Send via:</label><br />
-        <label>
-          <input type="radio" name="method" value="email" checked={method === 'email'} onChange={() => setMethod('email')} />
-          Email
-        </label>
-        <label style={{ marginLeft: '15px' }}>
-          <input type="radio" name="method" value="sms" checked={method === 'sms'} onChange={() => setMethod('sms')} />
-          SMS
-        </label>
+        {selectedOption && (
+          <>
+            <label className="deren-label">
+              Enter {selectedOption === "Email" ? "Email Address" : "Phone Number"}:
+            </label>
+            <input
+              type="text"
+              className="deren-input"
+              placeholder={selectedOption === "Email" ? "example@mail.com" : "+905..."}
+              value={contactInfo}
+              onChange={(e) => setContactInfo(e.target.value)}
+            />
+          </>
+        )}
+
+        <button className="deren-button" onClick={handleSend}>Send</button>
       </div>
-
-      <button onClick={handleSend} style={{ marginTop: '15px' }}>Send</button>
-
-      {status && <p style={{ color: 'green', marginTop: '10px' }}>{status}</p>}
     </div>
   );
 }
-
 export default DerenInterface;
