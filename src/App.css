@@ -1,0 +1,159 @@
+/* ====== Genel Sayfa Stili ====== */
+.App {
+  font-family: "Arial", sans-serif;
+  margin: 0;
+  padding: 0;
+}
+
+/* ====== Sidebar Menü ====== */
+.menu {
+  position: fixed;
+  top: 0;
+  left: 0;
+  height: 100vh;
+  width: 200px;
+  background-image: url("shopping.png");
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding-top: 20px;
+  box-shadow: 2px 0 8px rgba(0, 0, 0, 0.15);
+  gap: 20px;
+  z-index: 100;
+}
+
+/* Sidebar Başlık – Gölgeli, kutusuz */
+.menu-header {
+  color: #710024b5;
+  font-size: 2.1rem;
+  font-weight: bold;
+  text-align: center;
+  padding: 0;
+  margin: 20px 10px 0;
+  text-shadow: 2px 2px 6px rgb(255, 255, 255);
+}
+
+/* Sidebar Butonlar – Pembe kutular, ortalanmış */
+.menu button {
+  width: calc(100% - 40px);
+  background-color: rgba(250, 147, 162, 0.85);
+  color: #333;
+  border: 1px solid rgba(255, 255, 255, 0.792);
+  padding: 12px;
+  font-size: 1rem;
+  text-align: center;
+  cursor: pointer;
+  border-radius: 12px;
+  transition: background-color 0.3s, transform 0.2s, box-shadow 0.3s;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
+}
+.menu button:hover {
+  background-color: rgb(249, 146, 161);
+  transform: translateX(5px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+}
+
+/* ====== Üst Sabit Başlık ====== */
+header {
+  position: fixed;
+  top: 0;
+  left: 200px;
+  right: 0;
+  height: 60px;
+  background: rgba(254, 90, 118, 0.322);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+  z-index: 90;
+}
+header h1 {
+  margin: 0;
+  font-size: 1.6rem;
+  font-weight: 600;
+  color: #ffffff;
+  text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.2);
+}
+
+/* ====== Sayfa Yapısı ====== */
+.page-wrapper {
+  display: flex;
+  min-height: 100vh;
+  margin-left: 200px;
+  background: url("gifts.png") center/cover no-repeat;
+}
+
+/* ====== İçerik Alanı ====== */
+.page-content {
+  padding: 100px 20px 20px;
+  width: 100%;
+}
+
+/* ====== Yardımcı Buton Stilleri ====== */
+.btn {
+  padding: 0.75rem;
+  font-size: 1rem;
+  border: none;
+  border-radius: 0.5rem;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+.btn-record {
+  background: #4f46e5;
+  color: white;
+}
+.btn-record:hover {
+  background: #4338ca;
+}
+.btn-recommend {
+  background: #16a34a;
+  color: white;
+}
+.btn-recommend:hover {
+  background: #15803d;
+}
+
+/* ====== Liste ve Kart Stilleri ====== */
+.history-list {
+  list-style: disc inside;
+  color: #374151;
+  margin-bottom: 1rem;
+}
+.no-history {
+  font-style: italic;
+  color: #6b7280;
+}
+.recommend-card {
+  background: rgba(255, 255, 255, 0.9);
+  padding: 1.25rem;
+  border-radius: 0.75rem;
+  box-shadow: inset 0 2px 8px rgba(0, 0, 0, 0.05);
+}
+
+/* ====== Responsive ====== */
+@media (max-width: 768px) {
+  .menu {
+    position: relative;
+    width: 100%;
+    height: auto;
+    flex-direction: row;
+    justify-content: space-around;
+    padding: 10px;
+    overflow-x: auto;
+  }
+  .menu-header {
+    display: none;
+  }
+  header {
+    left: 0;
+  }
+  .page-wrapper {
+    margin-left: 0;
+  }
+  .page-content {
+    padding: 80px 10px 10px;
+  }
+}
