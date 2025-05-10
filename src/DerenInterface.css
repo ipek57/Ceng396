@@ -1,0 +1,61 @@
+.deren-wrapper {
+  background: url('https://iili.io/3v7wbvs.png') no-repeat center center fixed;
+  background-size: cover;
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.deren-container {
+  max-width: 400px;
+  margin: 80px auto;
+  background-color: rgba(255, 255, 255, 0.85);
+  padding: 30px;
+  border-radius: 10px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+}
+
+.deren-title {
+  text-align: center;
+  margin-bottom: 20px;
+  color: #333;
+}
+
+.deren-label {
+  display: block;
+  margin-top: 15px;
+  font-weight: bold;
+}
+
+.deren-select,
+.deren-input {
+  width: 100%;
+  padding: 10px;
+  margin-top: 5px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+}
+
+.deren-radio-group {
+  display: flex;
+  justify-content: space-around;
+  margin-top: 10px;
+}
+
+.deren-button {
+  display: block;
+  width: 100%;
+  margin-top: 25px;
+  padding: 12px;
+  background-color: #da9dc6;
+  color: white;
+  border: none;
+  font-size: 16px;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.deren-button:hover {
+  background-color: #df96d1;
+}
