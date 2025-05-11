@@ -234,6 +234,63 @@ useEffect(() => {
       image: "/images/library-kit.jpg",
       reason: "Organize your personal book collection like a pro.",
     },
+    {
+  id: 13,
+  name: "Comic Book Set",
+  price: 25,
+  interest: "books/comics",
+  image: "/images/comic.jpg",
+  reason: "Perfect for comic book fans and readers."
+},
+{
+  id: 14,
+  name: "Movie Night Kit",
+  price: 30,
+  interest: "films/series",
+  image: "/images/movie-night.jpg",
+  reason: "Everything needed for a cozy movie night."
+},
+{
+  id: 15,
+  name: "Fitness Tracker Band",
+  price: 40,
+  interest: "sports",
+  image: "/images/fitness-band.jpg",
+  reason: "Track steps and stay motivated in sports activities."
+},
+{
+  id: 16,
+  name: "Board Game Pack",
+  price: 35,
+  interest: "board games",
+  image: "/images/board-game.jpg",
+  reason: "Fun for game nights with friends and family."
+},
+{
+  id: 17,
+  name: "Travel Organizer Kit",
+  price: 20,
+  interest: "travelling",
+  image: "/images/travel-kit.jpg",
+  reason: "Keeps your essentials tidy while traveling."
+},
+{
+  id: 18,
+  name: "Blogging Journal",
+  price: 18,
+  interest: "blogging",
+  image: "/images/blogging.jpg",
+  reason: "For jotting down post ideas and creative thoughts."
+},
+{
+  id: 19,
+  name: "Dictionary",
+  price: 15,
+  interest: "language",
+  image: "/images/dictionarys.jpg",
+  reason: "A helpful tool for language learners."
+}
+
   ];
 
   return (
