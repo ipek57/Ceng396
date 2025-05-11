@@ -391,14 +391,14 @@ useEffect(() => {
       </div>
 
       {showSelected && (
-        <div className="mt-10">
-          <h2 className="gift-title mb-4">Your Selected Gifts</h2>
-          {selectedGifts.length === 0 ? (
-            <p className="text-gray-500 italic">You haven’t selected any gifts yet.</p>
-          ) : (
-            <div className="gift-grid">
-              {selectedGifts.map((gift) => (
-                <div key={gift.id} className="gift-card">
+  <div className="mt-10 centered-gift-section">
+    <h2 className="gift-title mb-4">Your Selected Gifts</h2>
+    {selectedGifts.length === 0 ? (
+      <p className="text-gray-500 italic">You haven’t selected any gifts yet.</p>
+    ) : (
+      <div className="centered-gift-grid">
+        {selectedGifts.map((gift) => (
+          <div key={gift.id} className="gift-card">
                   <img src={gift.image} alt={gift.name} className="gift-image" />
                   <h2 className="gift-name">{gift.name}</h2>
                   <p className="gift-price">${gift.price}</p>
@@ -416,14 +416,14 @@ useEffect(() => {
       )}
 
       {showFavorites && (
-        <div className="mt-10">
-          <h2 className="gift-title mb-4">Your Favorite Gifts</h2>
-          {favoriteGifts.length === 0 ? (
-            <p className="text-gray-500 italic">You haven’t favorited any gifts yet.</p>
-          ) : (
-            <div className="gift-grid">
-              {favoriteGifts.map((gift) => (
-                <div key={gift.id} className="gift-card">
+  <div className="mt-10 centered-gift-section">
+    <h2 className="gift-title mb-4">Your Favorite Gifts</h2>
+    {favoriteGifts.length === 0 ? (
+      <p className="text-gray-500 italic">You haven’t favorited any gifts yet.</p>
+    ) : (
+      <div className="centered-gift-grid">
+        {favoriteGifts.map((gift) => (
+          <div key={gift.id} className="gift-card">
                   <img src={gift.image} alt={gift.name} className="gift-image" />
                   <h2 className="gift-name">{gift.name}</h2>
                   <p className="gift-price">${gift.price}</p>
