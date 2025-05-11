@@ -7,10 +7,15 @@ function DerenInterface() {
 
   const handleOptionChange = (e) => {
     setSelectedOption(e.target.value);
-    setContactInfo(""); // clear previous value
+    setContactInfo(""); // Clear previous input
   };
 
   const handleSend = () => {
+    if (!contactInfo.trim()) {
+      alert(`Please enter a valid ${selectedOption === "Email" ? "email address" : "phone number"}.`);
+      return;
+    }
+
     alert(`Sending via ${selectedOption}: ${contactInfo}`);
   };
 
@@ -68,4 +73,5 @@ function DerenInterface() {
     </div>
   );
 }
+
 export default DerenInterface;
