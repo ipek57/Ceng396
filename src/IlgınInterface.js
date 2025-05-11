@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import './ilgin.css';
-/*import backgroundImage from './ilgin.jpg';*/
+
 
 function BudgetCardForm() {
   const [formData, setFormData] = useState({
@@ -52,8 +52,9 @@ function BudgetCardForm() {
   };
 
   return (
+    <div class="form-background-wrapper">
     <div className="card-form-container">
-      <form onSubmit={handleSubmit}>
+       <form onSubmit={handleSubmit}>
         <h2>💳 Add Budget Card Info</h2>
 
         <label>Card ID (8 digits)</label>
@@ -104,6 +105,7 @@ function BudgetCardForm() {
           ))}
         </ul>
       </div>
+    </div>
     </div>
   );
 }
