@@ -19,22 +19,31 @@ export default function GiftRecommendations() {
   const [occasion, setOccasion] = useState("");
 
   useEffect(() => {
-    const savedTheme = localStorage.getItem("theme");
-    if (savedTheme === "dark") {
-      setDarkMode(true);
-      document.body.classList.add("darkmode-force");
-    }
+  const savedTheme = localStorage.getItem("theme");
+  if (savedTheme === "dark") {
+    setDarkMode(true);
+    document.body.classList.add("darkmode-force");
+  }
 
-    const savedGifts = localStorage.getItem("selectedGifts");
-    if (savedGifts) {
-      setSelectedGifts(JSON.parse(savedGifts));
-    }
+  const savedGifts = localStorage.getItem("selectedGifts");
+  if (savedGifts) {
+    setSelectedGifts(JSON.parse(savedGifts));
+  }
 
-    const savedFavorites = localStorage.getItem("favoriteGifts");
-    if (savedFavorites) {
-      setFavoriteGifts(JSON.parse(savedFavorites));
-    }
-  }, []);
+  const savedFavorites = localStorage.getItem("favoriteGifts");
+  if (savedFavorites) {
+    setFavoriteGifts(JSON.parse(savedFavorites));
+  }
+
+  // 🌟 Arka plan sadece bu sayfada olsun
+  document.body.classList.add("idil-background");
+
+  // 🧹 Sayfadan çıkınca kaldır
+  return () => {
+    document.body.classList.remove("idil-background");
+  };
+}, []);
+
 
   const toggleDarkMode = () => {
     const newMode = !darkMode;
@@ -208,7 +217,7 @@ export default function GiftRecommendations() {
   ];
 
   return (
-    <div className="gift-container">
+<div className="gift-container idil-background">
       <header className="gift-header">
         <h1 className="gift-title">Gift Suggestions</h1>
         <div className="header-buttons">
