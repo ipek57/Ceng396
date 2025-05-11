@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from "react";
 import ReactModal from "react-modal";
 import "./idil.css";
+import backgroundIdil from './backgroundidil.jpg';
+
 
 export default function GiftRecommendations() {
   const [interest, setInterest] = useState("");
@@ -37,18 +39,25 @@ useEffect(() => {
     setFavoriteGifts(JSON.parse(savedFavorites));
   }
 
-  // 🧠 Alıcıları yükle
   const storedRecipients = localStorage.getItem("recipients");
   if (storedRecipients) {
     setRecipients(JSON.parse(storedRecipients));
   }
 
-  // 🌟 Arka plan sadece bu sayfada olsun
-  document.body.classList.add("idil-background");
+  // 🌟 Arka planı body'ye doğrudan uygula
+  document.body.style.backgroundImage = `url(${backgroundIdil})`;
+  document.body.style.backgroundSize = 'cover';
+  document.body.style.backgroundRepeat = 'no-repeat';
+  document.body.style.backgroundPosition = 'center';
+  document.body.style.backgroundAttachment = 'fixed';
 
-  // 🧹 Sayfadan çıkınca kaldır
+  // 🧹 Sayfadan çıkınca sıfırla
   return () => {
-    document.body.classList.remove("idil-background");
+    document.body.style.backgroundImage = '';
+    document.body.style.backgroundSize = '';
+    document.body.style.backgroundRepeat = '';
+    document.body.style.backgroundPosition = '';
+    document.body.style.backgroundAttachment = '';
   };
 }, []);
 
@@ -294,8 +303,19 @@ useEffect(() => {
 
   ];
 
-  return (
-<div className="gift-container idil-background">
+ return (
+  <div
+   // className="gift-container"
+    style={{
+      backgroundImage: `url(${backgroundIdil})`,
+      backgroundSize: 'cover',
+      backgroundPosition: 'center',
+      backgroundRepeat: 'no-repeat',
+      backgroundAttachment: 'fixed',
+      minHeight: '100vh'
+    }}
+  >
+
       <header className="gift-header">
         <h1 className="gift-title">Gift Suggestions</h1>
         <div className="header-buttons">
