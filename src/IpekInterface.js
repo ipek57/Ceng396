@@ -1,21 +1,5 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import "./ipek.css";
-
-const mockRecipients = [
-  { id: 1, name: "Ilgın" },
-  { id: 2, name: "İdil" },
-  { id: 3, name: "Deren" },
-  { id: 4, name: "İpek" },
-  { id: 5, name: "Salih" },
-];
-
-const initialGiftHistory = {
-  1: ["Bouquet of flowers", "Chocolate box"],
-  2: ["Book", "Mug"],
-  3: [],
-  4: ["Necklace", "Notebook"],
-  5: ["Watch"],
-};
 
 const possibleGifts = [
   "Bouquet of flowers",
@@ -30,18 +14,35 @@ const possibleGifts = [
   "Toy",
 ];
 
-export default function GiftHistoryPage() {
-  const [selectedRecipient, setSelectedRecipient] = useState(
-    mockRecipients[0].id
-  );
-  const [giftHistory, setGiftHistory] = useState({ ...initialGiftHistory });
+export default function IpekInterface({ onNext }) {
+  const [recipients, setRecipients] = useState([]);
+  const [selectedRecipient, setSelectedRecipient] = useState("");
+  const [giftHistory, setGiftHistory] = useState(() => {
+    const stored = localStorage.getItem("giftHistory");
+    return stored ? JSON.parse(stored) : {};
+  });
   const [searchTerm, setSearchTerm] = useState("");
-  const [recommendations, setRecommendations] = useState([]);
-  const [newGift, setNewGift] = useState(""); // ← yeni eklenen state
+  const [newGift, setNewGift] = useState("");
+  const [selectedToDelete, setSelectedToDelete] = useState({});
+
+  // load recipients
+  useEffect(() => {
+    const r = localStorage.getItem("recipients");
+    if (r) {
+      const arr = JSON.parse(r);
+      setRecipients(arr);
+      if (arr.length) setSelectedRecipient(arr[0].name);
+    }
+  }, []);
+
+  // persist history
+  useEffect(() => {
+    localStorage.setItem("giftHistory", JSON.stringify(giftHistory));
+  }, [giftHistory]);
 
   const history = giftHistory[selectedRecipient] || [];
-  const filteredHistory = history.filter((item) =>
-    item.toLowerCase().includes(searchTerm.toLowerCase())
+  const filteredHistory = history.filter((g) =>
+    g.toLowerCase().includes(searchTerm.toLowerCase())
   );
 
   const handleRecordGift = () => {
@@ -49,115 +50,149 @@ export default function GiftHistoryPage() {
     if (!gift) return;
     setGiftHistory((prev) => {
       const updated = { ...prev };
-      updated[selectedRecipient] = [
-        ...(updated[selectedRecipient] || []),
-        gift,
-      ];
+      if (!updated[selectedRecipient]) updated[selectedRecipient] = [];
+      if (!updated[selectedRecipient].includes(gift)) {
+        updated[selectedRecipient].push(gift);
+      }
       return updated;
     });
-    setNewGift(""); // input’u temizle
-    setRecommendations([]);
+    setNewGift("");
+    setSearchTerm("");
+  };
+
+  const toggleDelete = (gift) => {
+    setSelectedToDelete((prev) => ({
+      ...prev,
+      [selectedRecipient]: {
+        ...prev[selectedRecipient],
+        [gift]: !prev[selectedRecipient]?.[gift],
+      },
+    }));
+  };
+
+  const handleClearSelected = () => {
+    const toDel = selectedToDelete[selectedRecipient] || {};
+    setGiftHistory((prev) => {
+      const updated = { ...prev };
+      updated[selectedRecipient] = updated[selectedRecipient].filter(
+        (g) => !toDel[g]
+      );
+      return updated;
+    });
+    setSelectedToDelete((prev) => ({
+      ...prev,
+      [selectedRecipient]: {},
+    }));
   };
 
   const handleGenerateRecommendations = () => {
-    const past = giftHistory[selectedRecipient] || [];
-    const recs = possibleGifts.filter((g) => !past.includes(g));
-    setRecommendations(recs.slice(0, 3));
+    // compute your recs if needed...
+    onNext(); // <— now defined, coming from App.js
   };
 
   return (
     <div className="page-background">
       <div className="page-card">
-        <h1 className="text-3xl font-bold text-center mb-6 text-gray-800">
-          Gift History Tracker
-        </h1>
+        <h1>Gift History Tracker</h1>
 
-        {/* Selector & Search */}
+        {/* Select recipient & search */}
         <div className="grid-3 mb-6">
           <div>
-            <label htmlFor="recipient">Recipient</label>
+            <label className="block mb-1 font-medium">Recipient</label>
             <select
-              id="recipient"
-              className="select"
+              className="input"
               value={selectedRecipient}
               onChange={(e) => {
-                setSelectedRecipient(+e.target.value);
-                setRecommendations([]);
+                setSelectedRecipient(e.target.value);
                 setSearchTerm("");
+                setSelectedToDelete({});
               }}
+              disabled={!recipients.length}
             >
-              {mockRecipients.map((r) => (
-                <option key={r.id} value={r.id}>
+              <option value="">– select –</option>
+              {recipients.map((r, i) => (
+                <option key={i} value={r.name}>
                   {r.name}
                 </option>
               ))}
             </select>
           </div>
+
           <div>
-            <label htmlFor="search">Search Past Gifts</label>
+            <label className="block mb-1 font-medium">Search Past Gifts</label>
             <input
-              id="search"
+              className="input"
               type="text"
               placeholder="e.g. Book"
-              className="input"
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
             />
           </div>
         </div>
 
-        {/* History */}
+        {/* History with checkboxes */}
         <div>
           {filteredHistory.length > 0 ? (
-            <ul className="history-list">
-              {filteredHistory.map((gift, idx) => (
-                <li key={idx}>{gift}</li>
+            <ul className="history-list mb-4">
+              {filteredHistory.map((g, idx) => (
+                <li key={idx} className="flex items-center gap-2">
+                  <input
+                    type="checkbox"
+                    checked={!!selectedToDelete[selectedRecipient]?.[g]}
+                    onChange={() => toggleDelete(g)}
+                  />
+                  <span>{g}</span>
+                </li>
               ))}
             </ul>
           ) : (
-            <p className="no-history">
-              No past gifts found for this recipient.
-            </p>
+            <p className="text-gray-600 mb-4">No past gifts found.</p>
           )}
         </div>
 
-        {/* Record Gift kısmı artık inline input + buton */}
-        <div className="flex flex-col md:flex-row items-center gap-4 mb-6">
-          <input
-            type="text"
-            placeholder="Enter a past gift…"
-            className="input flex-1"
-            value={newGift}
-            onChange={(e) => setNewGift(e.target.value)}
-          />
-          <button
-            className="btn btn-record"
-            onClick={handleRecordGift}
-            disabled={!newGift.trim()}
-          >
-            Record Gift
-          </button>
-          <button
-            className="btn btn-recommend"
-            onClick={handleGenerateRecommendations}
-          >
-            Generate Recommendations
-          </button>
-        </div>
-
-        {/* Recommendations */}
-        {recommendations.length > 0 && (
-          <div className="recommend-card">
-            <h2 className="text-2xl font-semibold mb-4 text-gray-800">
-              Recommendations
-            </h2>
-            <ul className="list-decimal list-inside text-gray-700">
-              {recommendations.map((gift, idx) => (
-                <li key={idx}>{gift}</li>
-              ))}
-            </ul>
+        {/* New Gift & Buttons */}
+        <div className="mt-6">
+          <div className="mb-4">
+            <label className="block mb-1 font-medium">New Gift</label>
+            <input
+              className="input"
+              type="text"
+              placeholder="Type a gift…"
+              value={newGift}
+              onChange={(e) => setNewGift(e.target.value)}
+            />
           </div>
-        )}
+          <div style={{ display: "flex", gap: "10px" }}>
+            <button
+              type="button"
+              className="btn flex-1"
+              onClick={handleRecordGift}
+              disabled={!newGift.trim()}
+            >
+              Record Gift
+            </button>
+            <button
+              type="button"
+              className="btn btn-clear flex-1"
+              onClick={handleClearSelected}
+              disabled={
+                !Object.values(selectedToDelete[selectedRecipient] || {}).some(
+                  Boolean
+                )
+              }
+            >
+              Clear Selected
+            </button>
+            <button
+              type="button"
+              className="btn btn-recommend flex-1"
+              onClick={handleGenerateRecommendations}
+              disabled={!selectedRecipient}
+            >
+              Generate Recommendations
+            </button>
+          </div>
+        </div>
       </div>
     </div>
   );
