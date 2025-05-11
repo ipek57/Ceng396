@@ -38,7 +38,7 @@ function App() {
       case "deren":
         return <DerenInterface />;
       case "ipek":
-        return <IpekInterface />;
+        return <IpekInterface onNext={() => setSelectedUser("idil")} />;
       case "salih":
         return <SalihInterface />;
       default:
