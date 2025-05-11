@@ -117,24 +117,25 @@ useEffect(() => {
   };
 
   const handleSearch = () => {
-  let keyword = interest.trim().toLowerCase();
+  let keywords = [interest.trim().toLowerCase()];
 
-  // Eğer kullanıcı seçiliyse ve ilgi alanı varsa, bunu kullan
+  // Eğer kullanıcı seçiliyse ve birden fazla ilgi alanı varsa, tümünü keywords olarak kullan
   if (selectedRecipient && selectedRecipient.interests.length > 0) {
-    keyword = selectedRecipient.interests[0].toLowerCase();
+    keywords = selectedRecipient.interests.map(i => i.toLowerCase());
   }
 
   const maxBudget = parseFloat(budget);
 
   const results = giftList.filter(
     (gift) =>
-      gift.interest.toLowerCase().includes(keyword) &&
+      keywords.some((kw) => gift.interest.toLowerCase().includes(kw)) &&
       (!isNaN(maxBudget) ? gift.price <= maxBudget : true)
   );
 
   setFilteredGifts(results);
   setHasSearched(true);
 };
+
 
 
   const giftList = [
@@ -340,7 +341,7 @@ useEffect(() => {
       const selected = recipients.find(r => r.name === e.target.value);
       setSelectedRecipient(selected || null);
       if (selected && selected.interests.length > 0) {
-        setInterest(selected.interests[0]); // ✨ otomatik interest güncellemesi
+  setInterest(selected.interests.join(", ")); // tüm ilgi alanlarını virgülle yaz
       }
     }}
     className="input-field"
