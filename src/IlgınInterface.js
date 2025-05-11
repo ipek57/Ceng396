@@ -51,6 +51,13 @@ function BudgetCardForm() {
     }
   };
 
+  const handleDelete = (index) => {
+  const updated = budgets.filter((_, i) => i !== index);
+  setBudgets(updated);
+  localStorage.setItem('budgetCards', JSON.stringify(updated));
+  };
+
+
   return (
     <div class="form-background-wrapper">
     <div className="card-form-container">
@@ -95,15 +102,17 @@ function BudgetCardForm() {
 
       <div className="budget-card-list">
         <h3>📋 Saved Budgets:</h3>
-        <ul>
-          {budgets.map((b, idx) => (
-            <li key={idx}>
-              <strong>{b.cardOwner}</strong><br />
-              🪪 {b.cardId}<br />
-              💰 ₺{b.amount}
-            </li>
-          ))}
-        </ul>
+          <ul>
+            {budgets.map((b, idx) => (
+              <li key={idx}>
+                <strong>{b.cardOwner}</strong><br />
+                🪪 {b.cardId}<br />
+                💰 ₺{b.amount}<br />
+                <button onClick={() => handleDelete(idx)} className="delete-btn">🗑️ Delete</button>
+              </li>
+            ))}
+          </ul>
+
       </div>
     </div>
     </div>
