@@ -17,8 +17,10 @@ export default function GiftRecommendations() {
   const [currentGiftToSelect, setCurrentGiftToSelect] = useState(null);
   const [recipient, setRecipient] = useState("");
   const [occasion, setOccasion] = useState("");
+  const [recipients, setRecipients] = useState([]);
+  const [selectedRecipient, setSelectedRecipient] = useState(null);
 
-  useEffect(() => {
+useEffect(() => {
   const savedTheme = localStorage.getItem("theme");
   if (savedTheme === "dark") {
     setDarkMode(true);
@@ -35,6 +37,12 @@ export default function GiftRecommendations() {
     setFavoriteGifts(JSON.parse(savedFavorites));
   }
 
+  // 🧠 Alıcıları yükle
+  const storedRecipients = localStorage.getItem("recipients");
+  if (storedRecipients) {
+    setRecipients(JSON.parse(storedRecipients));
+  }
+
   // 🌟 Arka plan sadece bu sayfada olsun
   document.body.classList.add("idil-background");
 
@@ -43,6 +51,7 @@ export default function GiftRecommendations() {
     document.body.classList.remove("idil-background");
   };
 }, []);
+
 
 
   const toggleDarkMode = () => {
@@ -108,14 +117,25 @@ export default function GiftRecommendations() {
   };
 
   const handleSearch = () => {
-    const results = giftList.filter(
-      (gift) =>
-        gift.interest.toLowerCase().includes(interest.toLowerCase()) &&
-        gift.price <= parseFloat(budget)
-    );
-    setFilteredGifts(results);
-    setHasSearched(true);
-  };
+  let keyword = interest.trim().toLowerCase();
+
+  // Eğer kullanıcı seçiliyse ve ilgi alanı varsa, bunu kullan
+  if (selectedRecipient && selectedRecipient.interests.length > 0) {
+    keyword = selectedRecipient.interests[0].toLowerCase();
+  }
+
+  const maxBudget = parseFloat(budget);
+
+  const results = giftList.filter(
+    (gift) =>
+      gift.interest.toLowerCase().includes(keyword) &&
+      (!isNaN(maxBudget) ? gift.price <= maxBudget : true)
+  );
+
+  setFilteredGifts(results);
+  setHasSearched(true);
+};
+
 
   const giftList = [
     {
@@ -256,15 +276,36 @@ export default function GiftRecommendations() {
           />
         </div>
         <div className="input-group">
-          <label className="input-label">Max Budget ($):</label>
-          <input
-            type="number"
-            value={budget}
-            onChange={(e) => setBudget(e.target.value)}
-            className="input-field"
-            placeholder="e.g. 30"
-          />
-        </div>
+  <label className="input-label">Select Recipient:</label>
+  <select
+    value={selectedRecipient ? selectedRecipient.name : ""}
+    onChange={(e) => {
+      const selected = recipients.find(r => r.name === e.target.value);
+      setSelectedRecipient(selected || null);
+      if (selected && selected.interests.length > 0) {
+        setInterest(selected.interests[0]); // ✨ otomatik interest güncellemesi
+      }
+    }}
+    className="input-field"
+  >
+    <option value="">-- No recipient selected --</option>
+    {recipients.map((r, i) => (
+      <option key={i} value={r.name}>{r.name}</option>
+    ))}
+  </select>
+</div>
+
+<div className="input-group">
+  <label className="input-label">Max Budget ($):</label>
+  <input
+    type="number"
+    value={budget}
+    onChange={(e) => setBudget(e.target.value)}
+    className="input-field"
+    placeholder="e.g. 30"
+  />
+</div>
+
         <button onClick={handleSearch} className="suggest-button">
           Get Suggestions
         </button>
